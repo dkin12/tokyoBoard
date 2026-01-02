@@ -1,0 +1,36 @@
+// postAPi.js
+
+import { api } from "./api";
+
+// 게시글 목록 ( 전체 조회 )
+// { page = 0, size = 0, keyword = '' } 서버에서 넘기는 값이 없는 경우 자바스크립트에서 정한 기본값으로 사용 
+
+export async function fetchPosts({ page = 0, size = 0, keyword = '' }) {
+  const params = { page, size }; // page, size를 쿼리 파라미터에 넣음 
+  if (keyword && keyword.trim() !== '') {
+    params.keyword = keyword;
+  }
+  // aixos가 쿼리 스트링을 자동으로 붙여줌 axios.get(url,{params});
+  const res = await api.get('/api/posts', { params });
+  return res.data;
+}
+// 게시글 상세
+export async function fetchPostsDetail(postId) {
+  const res = await api.get(`/api/posts/${postId}`,);
+  return res.data;
+}
+// 게시글 작성
+export async function createPosts(payload) {
+  const res = await api.post('/api/posts', payload);
+  return res.data;
+}
+// 게시글 수정
+export async function updatePosts(postId, postData) {
+  const res = await api.put(`/api/posts/${postId}`, postData);
+  return res.data;
+}
+// 게시글 삭제
+export async function deletePosts(postId) {
+  const res = await api.delete(`/api/posts/${postId}`);
+  return res.data;
+}
